@@ -1,0 +1,198 @@
+\documentclass{beamer}
+
+% If you use the optional handout parameter below, none of the pauses between slides are printed.  Only one of these first two lines should be used at a time.
+% \documentclass[handout]{beamer}
+
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{amsmath, amsthm, amssymb, upgreek, amscd, verbatim, xcolor}
+\usepackage{centernot}
+\usepackage{datetime}
+\usepackage{fontspec}
+\usepackage[slantfont, boldfont]{xeCJK}
+\usepackage{graphicx} 
+\usepackage{float} 
+\usepackage{subfigure}
+\usepackage{tikz}
+\usepackage{unicode-math} 
+\usepackage{extarrows}
+\usepackage{graphicx}
+
+
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\setbeamertemplate{items}[circle]
+
+% Use the XITS font
+\setmathfont{XITSMath-Regular}
+\setmainfont{XITSMath-Regular}
+\setsansfont{XITSMath-Regular}
+\setmonofont{XITSMath-Regular}
+
+\setCJKmainfont{SimSun}[BoldFont=SimHei, ItalicFont=KaiTi]
+
+% File matadata
+\newcommand{\DocumentTitle}{浅谈几何分布}
+\newcommand{\DocumentAuthor}{胡顾笑、张溥原、赵俣翔、邱义楷}
+
+\hypersetup{
+pdftitle={\DocumentTitle},
+% pdfsubject={lorem ipsum},  % TODO
+pdfauthor={\DocumentAuthor}, 
+% pdfkeywords={lorem ipsum}  % TODO
+}
+
+%New Commands
+\newcommand{\ssm}{\,{}^\smallsetminus\,}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Geom}{\operatorname{Geom}}
+\newcommand{\Var}{\operatorname{Var}}
+
+\begin{document}
+\title{\textbf\DocumentTitle}
+\author[高二数学小组展示]{\DocumentAuthor}
+\date{\today}
+
+\maketitle
+
+\begin{frame}{目录}
+    \tableofcontents
+\end{frame}
+
+\section{引入问题}
+
+\begin{frame}{例题}
+    \begin{example}
+        某饮料抽中“再来一瓶”的概率为 $1/3$，求期望喝到的瓶数。
+    \end{example}
+    \pause 
+    \begin{solution}
+        设期望喝到 $x$ 瓶，
+        $$
+        x = \frac 13(1 + x) + \frac23 (1)
+        $$
+        解得 $x = 3/2$。
+    \end{solution}
+\end{frame}
+
+
+\section{几何分布}
+
+\begin{frame}{定义}
+    \begin{definition}
+        回顾对 $n$ 重伯努利实验的定义：
+        \begin{itemize}
+            \item 结果只有两种：\textit{成功或失败}的实验,称为\textbf{伯努利实验}。
+            \item 重复进行 $n$ 次\textit{相互独立}的伯努利实验，称为\textbf{ $n$ 重伯努利实验}。
+        \end{itemize}
+    \end{definition}
+    \pause 
+    \begin{definition}
+        重复进行独立的伯努利实验 (每次实验的成功概率均为 $p$)，直到第 $X$ 次成功为止。我们称 $X$ 服从\textbf{几何分布}，或 $X \sim \Geom(p)$。
+    \end{definition}
+\end{frame}
+
+\begin{frame}{分布、期望、方差}
+    \begin{itemize}
+        \item 分布
+        \begin{theorem}
+            若 $X\sim \Geom(p)$，则
+            $$
+                \Prob(X=k) = (1-p)^{k - 1}p
+            $$
+        \end{theorem}
+        \pause
+        \item 期望与方差
+        \begin{corollary}
+            \begin{itemize}
+                \item $\E[X] = \frac1p$
+                \item $\Var[X] = \frac{1 - p}{p^2}$
+            \end{itemize}
+        \end{corollary}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{对期望的证明}
+    \begin{block}{Insight}
+        根据期望的定义，有
+        $$
+            \begin{aligned}
+                \E[X] &= \sum_{k = 1}^\infty k\Prob(X=k)\\
+                &= p\sum_{k = 1}^\infty k(1-p)^{k - 1}
+            \end{aligned}
+        $$
+        计算这个级数即可。
+    \end{block}
+
+    \begin{lemma}
+        熟知，几何级数 (无穷等比数列的前 $n\to \infty$ 项和) 收敛仅当公比 $-1 < r < 1$，此时：
+        $$
+        \sum_{k = 1}^{\infty} r^k = \frac{1}{1 - r}
+        $$
+        % \pause
+        注意到：上式两边求导后，
+        $$
+        \begin{aligned}
+            \frac{\mathrm d}{\mathrm dr}\left(\sum_{k = 1}^{\infty} r^k\right) &=  \frac{\mathrm d}{\mathrm dr}\left(\frac{1}{1 - r}\right)\\
+            \Rightarrow \sum_{k = 1}^{\infty} kr^{k - 1} &= \boxed{\frac{1}{(1 - r)^2}}
+        \end{aligned}
+        $$
+    \end{lemma}
+
+    \begin{proof}
+        令上式中 $r = 1 - p$，
+        $$
+        \begin{aligned}
+            \E[X] &= p\left[\frac{1}{(1 - 1 + p)^2}\right]
+            &= \frac 1p
+        \end{aligned}
+        $$
+    \end{proof}
+
+\end{frame}
+
+\section{彩蛋}
+
+\begin{frame}{彩蛋：使用状态视角看``喝饮料''问题}
+    \begin{definition}
+        我们定义：
+        \begin{itemize}
+            \item 状态 $S$: 手上有一瓶饮料可以喝的状态
+            \item 状态 0: 没有饮料可以喝了，游戏结束
+        \end{itemize}
+    \end{definition}
+    \pause
+    使用 $\E[state]$ 表示处于某个状态下喝到瓶数的期望，显然 $\E[0] = 0$。我们考虑状态间的转移：
+    \pause
+    \begin{proof}
+    $$
+        \begin{aligned}
+            \E[S] &= \frac13 \E[S] + \frac23 \E[0] + 1 \\
+            \Rightarrow \E[S] &= \frac32
+        \end{aligned}
+    $$
+    \end{proof}
+\end{frame}
+
+\begin{frame}{彩蛋：几何分布和超几何分布}
+    \begin{itemize}
+        \item 几何分布的名称来源于几何级数
+        \item 超几何分布的名称来源于超几何函数 (\href{https://en.wikipedia.org/wiki/Generalized_hypergeometric_function}{\color{blue}{Wikipedia}})
+    \end{itemize}
+\end{frame}
+
+\section{致谢}
+
+\begin{frame}{Thanks}
+    \begin{center}
+        {\Huge{谢谢！}}
+    \end{center}
+\end{frame}
+
+\end{document}
